@@ -21,7 +21,7 @@ install NLopt (version 2.6.1) by homebrew
 
 ## how to use
 
-the executable `nloptSolve` asks for 3 options: a path to data file, a path to solver options file, and a path to a file 
+the executable `nloptSolve` asks for 3 options: a path to data file, a path to solver options file, and a path to the file 
 to store the result.
 
     ./nloptSolve [dataFile] [solver_options_file] [result_file]
