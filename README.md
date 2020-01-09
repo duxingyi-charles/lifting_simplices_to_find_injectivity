@@ -24,8 +24,34 @@ install NLopt (version 2.6.1) by homebrew
 the executable `nloptSolve` asks for 3 options: a path to data file, a path to solver options file, and a path to the file 
 to store the result.
 
-    ./nloptSolve [dataFile] [solver_options_file] [result_file]
+    ./nloptSolve [data_file] [solver_options_file] [result_file]
 
 example:
 
     ./nloptSolve test/lifted test/lifted_solver_options test/lifted_res
+
+## data format
+
+data_file
+
+    num_restVert dimension_restVert
+    ... num_restVert x dimension_restVert matrix ...
+    num_initVert dimension_initVert
+    ... num_initVert x dimension_initVert matrix ...
+    num_simplex simplex_size
+    ... num_simplex x simplex_size matrix ...
+    num_handles
+    ... num_handles x 1 matrix ...
+    harmonic OR tutte-uniform
+    alpha
+
+result_file
+    
+    name dims
+    data
+    ...
+
+    
+    
+    
+    
