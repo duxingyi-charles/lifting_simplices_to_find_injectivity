@@ -416,6 +416,7 @@ public:
 	 	double alpha) :
 	 V(initV), F(restF), freeI(0), solutionFound(false),
 	 lastFunctionValue(HUGE_VAL), stopCode("none"),
+	 nb_feval(0),nb_geval(0),
 	 record_vert(false), record_energy(false), record_minArea(false),
 	 vertRecord(0),energyRecord(0), minAreaRecord(0)
 	 {
@@ -496,6 +497,9 @@ public:
 	std::vector<double> x0;
 	bool solutionFound;
 	double lastFunctionValue;
+
+	int nb_feval;
+	int nb_geval;
 
 	//from options
 	std::string stopCode;
@@ -766,6 +770,8 @@ double lifted_func(const std::vector<double> &x, std::vector<double> &grad, void
 		f = f/12;
 	}
 	
+	//test
+	data->nb_feval += 1;
 
 	//compute gradient
 	if (!grad.empty())
@@ -829,6 +835,9 @@ double lifted_func(const std::vector<double> &x, std::vector<double> &grad, void
 				grad[ndim*i+j] = gi[j];
 			}
 		}
+
+		//test
+		data->nb_geval += 1;
 	}
 
 	//record information
@@ -925,12 +934,15 @@ int main(int argc, char const *argv[])
 				std::cout << "MAXTIME_REACHED" << std::endl;
 				break;
 			default:
-				std::cout << "unexpected retrun code!" << std::endl;
+				std::cout << "unexpected return code!" << std::endl;
 				break;
 		}
 		std::cout << "met custom stop criteria: ";
 		if (data.solutionFound) std::cout << "yes" << std::endl;
 		else std::cout << "no" << std::endl;
+		//
+		std::cout << data.nb_feval << " function evalations, ";
+		std::cout << data.nb_geval << " gradient evalations." << std::endl;
 
 	}
 	catch(std::exception &e) {
