@@ -5,8 +5,11 @@
 #include <fstream>
 #include <string>
 #include <limits>
+#include <chrono>
 
 #include <nlopt.hpp>
+
+
 
 bool importData(const char* filename,
 	std::vector<std::vector<double> > &restV,
@@ -361,13 +364,40 @@ double tet_signed_volume(const std::vector<double> &p1,
    	return vol;
 }
 
+// double tri_area(const std::vector<double> &d)
+// {
+// 	// input: d is a vector of squared length of 3 edges of a triangle
+// 	// return: 4 times of the triangle area
+// 	double d0=d[0],d1=d[1],d2=d[2];
+// 	double det = -d2*d2 + d1*(-d1 + 2*d2) + d0*(-d0 + 2*d1 + 2*d2);
+// 	return sqrt(det);
+// }
+
 double tri_area(const std::vector<double> &d)
 {
-	// input: d is a vector of squared length of 3 edges of a triangle
+    // input: d is a vector of squared length of 3 edges of a triangle
 	// return: 4 times of the triangle area
-	double d0=d[0],d1=d[1],d2=d[2];
-	double det = -d2*d2 + d1*(-d1 + 2*d2) + d0*(-d0 + 2*d1 + 2*d2);
-	return sqrt(det);
+	// more numerical robust Heron's formula
+	// sort d1,d2,d3 as a >= b >= c
+	double d1=d[0],d2=d[1],d3=d[2];
+	double a,b,c;
+	if (d1 > d2) { a = d1; b = d2; }
+	else { a = d2; b = d1; }
+	c = d3;
+	if (d3 > b) {
+	   c = b;
+	   b = d3;
+	   if (d3 > a) {
+	       b = a;
+	       a = d3;
+	   }
+	}
+
+	a = sqrt(a);
+	b = sqrt(b);
+	c = sqrt(c);
+
+    return sqrt((a+(b+c))*(c-(a-b))*(c+(a-b))*(a+(b-c)));
 }
 
 double tet_volume(const std::vector<double> &d)
@@ -912,7 +942,10 @@ int main(int argc, char const *argv[])
 
 	//optimize
 	try{
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 		nlopt::result result = opt.optimize(x, minf);
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		std::cout << "Time difference: " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << " [microseconds]" << std::endl;
 		std::cout << "result: ";
 		switch(result) {
 			case nlopt::SUCCESS:
