@@ -6,12 +6,14 @@ add_executable(findInjective TLC.cpp)
 
 set(CMAKE_CXX_STANDARD 11)
 
+set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build")
+
 set(NLopt_INCLUDE_DIR /usr/local/include CACHE PATH "NLopt include directory")
 set(NLopt_LIB_DIR /usr/local/lib CACHE PATH "NLopt library directory")
 
 target_include_directories(findInjective PUBLIC "${NLopt_INCLUDE_DIR}")
 
-target_link_libraries(findInjective PUBLIC -L"${NLopt_LIB_DIR}")
+target_link_libraries(findInjective PUBLIC -L"${NLopt_LIB_DIR}" nlopt)
 
 find_library(MATH_LIBRARY m)
 if(MATH_LIBRARY)
