@@ -1,9 +1,11 @@
-# lifted-nlopt
-lifted energy minimization by NLopt library.
+# TLC-QN
+TLC (Total Lifted Content) energy minimization by quasi-Newton method.
 
 tested on macOS 10.15.1 (Apple Clang 11.0.0) and Ubuntu 18.04.3 LTS (gcc 7.4.0).
 
 ## install NLopt
+
+We use the lbfgs quasi-Newton method implemented in NLopt.
 
 ### macOS
 install NLopt (version 2.6.1) by homebrew
