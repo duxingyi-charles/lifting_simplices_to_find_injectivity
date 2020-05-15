@@ -16,9 +16,6 @@ bool importData(const char* filename,
 	std::vector<std::vector<double> > &initV,
 	std::vector<std::vector<unsigned> > &F,
 	std::vector<unsigned> &handles
-//	,
-//	std::string &form,
-//	double &alpha
 	)
 {
 	std::ifstream in_file(filename);
@@ -79,12 +76,6 @@ bool importData(const char* filename,
     	in_file >> v;
     	handles[i] = v;
     }
-
-    //form
-//    in_file >> form;
-
-    //alpha
-//    in_file >> alpha;
 
     in_file.close();
 
@@ -343,10 +334,10 @@ void mat_add_to(std::vector<std::vector<double> > &m1, const std::vector<std::ve
 	}
 }
 
+// pts is a vector of 2D coordinates of 3 points of triangle
+// return: 2 times of signed area of the triangle
 double tri_signed_area(const std::vector<std::vector<double> > &pts)
 {
-	// pts is a vector of 2D coordinates of 3 points of triangle
-	// return: 2 times of signed area of the triangle
 	double x1=pts[0][0], y1=pts[0][1];
 	double x2=pts[1][0], y2=pts[1][1];
 	double x3=pts[2][0], y3=pts[2][1];
@@ -354,10 +345,10 @@ double tri_signed_area(const std::vector<std::vector<double> > &pts)
 	return area;
 }
 
+// pts is a vector of 3D coordinates of 4 points of a tet
+// return: 6 times of signd volume of the tet
 double tet_signed_volume(const std::vector<std::vector<double> > &pts)
 {
-	// pts is a vector of 3D coordinates of 4 points of a tet
-	// return: 6 times of signd volume of the tet
 	double x1=pts[0][0], y1=pts[0][1], z1=pts[0][2];
 	double x2=pts[1][0], y2=pts[1][1], z2=pts[1][2];
 	double x3=pts[2][0], y3=pts[2][1], z3=pts[2][2];
@@ -369,12 +360,12 @@ double tet_signed_volume(const std::vector<std::vector<double> > &pts)
    	return vol;
 }
 
+// input: 2D coordinates of 3 points of a triangle
+// return: 2 times of signed volume of the triangle
 double tri_signed_area(const std::vector<double> &p1,
 	const std::vector<double> &p2,
 	const std::vector<double> &p3)
 {
-	// input: 2D coordinates of 3 points of a triangle
-	// return: 2 times of signed volume of the triangle
 	double x1=p1[0], y1=p1[1];
 	double x2=p2[0], y2=p2[1];
 	double x3=p3[0], y3=p3[1];
@@ -382,13 +373,13 @@ double tri_signed_area(const std::vector<double> &p1,
 	return area;
 }
 
+// input: 3D coordinates of 4 points of a tet
+// return: 6 times of signed volume of the tet
 double tet_signed_volume(const std::vector<double> &p1,
 	const std::vector<double> &p2,
 	const std::vector<double> &p3,
 	const std::vector<double> &p4)
 {
-	// input: 3D coordinates of 4 points of a tet
-	// return: 6 times of signed volume of the tet
 	double x1=p1[0], y1=p1[1], z1=p1[2];
 	double x2=p2[0], y2=p2[1], z2=p2[2];
 	double x3=p3[0], y3=p3[1], z3=p3[2];
@@ -400,10 +391,11 @@ double tet_signed_volume(const std::vector<double> &p1,
    	return vol;
 }
 
+// input: tri-mesh with vertices V and faces F
+// return: total signed area of the tri-mesh
 double total_tri_signed_area(const std::vector<std::vector<double> > &V,
                              const std::vector<std::vector<unsigned> > &F)
 {
-    // input: tri-mesh with vertices V and faces F
     unsigned nF = F.size();
 
     double area = 0;
@@ -415,10 +407,11 @@ double total_tri_signed_area(const std::vector<std::vector<double> > &V,
     return area;
 }
 
+// input: tet-mesh with vertices V and faces F
+// return: total signed volume of the tet-mesh
 double total_tet_signed_volume(const std::vector<std::vector<double> > &V,
                              const std::vector<std::vector<unsigned> > &F)
 {
-    // input: tet-mesh with vertices V and faces F
     unsigned nF = F.size();
 
     double area = 0;
@@ -430,11 +423,10 @@ double total_tet_signed_volume(const std::vector<std::vector<double> > &V,
     return area;
 }
 
-
+// input: d is a vector of squared length of 3 edges of a triangle
+// return: 4 times of the triangle area
 double tri_area(const std::vector<double> &d)
 {
-    // input: d is a vector of squared length of 3 edges of a triangle
-	// return: 4 times of the triangle area
 	// more numerical robust Heron's formula
 	// sort d1,d2,d3 as a >= b >= c
 	double d1=d[0],d2=d[1],d3=d[2];
@@ -458,10 +450,10 @@ double tri_area(const std::vector<double> &d)
     return sqrt((a+(b+c))*(c-(a-b))*(c+(a-b))*(a+(b-c)));
 }
 
+// input: d is a vector of squared length of 6 edges of a tet
+// return: 12 times of the tet volume
 double tet_volume(const std::vector<double> &d)
 {
-	// input: d is a vector of squared length of 6 edges of a tet
-	// return: 12 times of the tet volume
 	double d0=d[0],d1=d[1],d2=d[2],d3=d[3],d4=d[4],d5=d[5];
 	double det = -(d1*d1*d4) - d0*d0*d5 - d3*(d2*d2 + d2*(d3 - d4 - d5) + d4*d5) + 
 	d1*(d2*(d3 + d4 - d5) + d4*(d3 - d4 + d5)) + 
@@ -469,12 +461,12 @@ double tet_volume(const std::vector<double> &d)
 	return sqrt(det);
 }
 
+// input: mesh with vertices V and cells F
+// return (reference): vector of squared edge lengths
 void compute_mesh_squared_edge_length(const std::vector<std::vector<double> > &V,
         const std::vector<std::vector<unsigned> > &F,
         std::vector<std::vector<double> > &edgeLen2)
 {
-    // input: mesh with vertices V and cells F
-    // modify: vector of squared edge lengths
     unsigned nF = F.size();
     unsigned simplexSize = F[0].size();
     unsigned nEdge = simplexSize * (simplexSize -1) /2;
@@ -495,11 +487,11 @@ void compute_mesh_squared_edge_length(const std::vector<std::vector<double> > &V
     }
 }
 
+// input: a tri-mesh with vertices V and faces F
+// output: total unsigned area of the mesh
 double total_tri_area(const std::vector<std::vector<double> > &V,
         const std::vector<std::vector<unsigned> > &F)
 {
-    // input: a tri-mesh with vertices V and faces F
-    // output: total unsigned area of the mesh
     unsigned nF = F.size();
 
     std::vector<std::vector<double> > edgeLen2;
@@ -515,11 +507,11 @@ double total_tri_area(const std::vector<std::vector<double> > &V,
     return  area;
 }
 
+// input: a tet-mesh with vertices V and tets F
+// output: total unsigned volume of the mesh
 double total_tet_volume(const std::vector<std::vector<double> > &V,
                       const std::vector<std::vector<unsigned> > &F)
 {
-    // input: a tet-mesh with vertices V and tets F
-    // output: total unsigned volume of the mesh
     unsigned nF = F.size();
 
     std::vector<std::vector<double> > edgeLen2;
@@ -921,7 +913,7 @@ double lifted_func(const std::vector<double> &x, std::vector<double> &grad, void
 		}
 	}
 
-	// custom stop criterior
+	// custom stop criterion
 	if (data->stopQ())
 	{
 		data->solutionFound = true;
@@ -1044,7 +1036,7 @@ double lifted_func(const std::vector<double> &x, std::vector<double> &grad, void
 }
 
 
-//// test nlopt
+//
 int main(int argc, char const *argv[])
 {
 	const char* dataFile = (argc > 1) ? argv[1] : "../example/input";
@@ -1057,20 +1049,15 @@ int main(int argc, char const *argv[])
 	std::vector<std::vector<unsigned> > F;
 	std::vector<unsigned> handles;
 
-	//importData(dataFile,restV,initV,F,handles,form,alpha);
     importData(dataFile,restV,initV,F,handles);
 
     //import options
-    //
-//    std::string form;
-//    double alpha;
     NloptOptionManager options(optFile);
     //std::cout << "--- options ---" << std::endl;
     //options.printOptions();
 
 
 	//init
-	//LiftedData data(restV,initV,F,handles,form,alpha);
     LiftedData data(restV,initV,F,handles,options.form,options.alphaRatio,options.alpha);
 
 	unsigned nv = restV.size();
@@ -1094,7 +1081,7 @@ int main(int argc, char const *argv[])
 	opt.set_xtol_rel(options.xtol_rel);
 	opt.set_maxeval(options.maxeval);
 
-	//pass relevent options to LiftedData
+	//pass relevant options to LiftedData
 	data.stopCode = options.stopCode;
 	data.set_record_flags(options.record);
 
@@ -1151,7 +1138,3 @@ int main(int argc, char const *argv[])
 
 	return 0;
 }
-
-
-
-
