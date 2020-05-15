@@ -1,3 +1,9 @@
+form
+harmonic
+alphaRatio
+0.00001
+alpha
+-1
 ftol_abs
 0.00000001
 ftol_rel
