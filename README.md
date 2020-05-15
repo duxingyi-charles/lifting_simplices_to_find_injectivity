@@ -33,7 +33,7 @@ install NLopt (version 2.6.1) by homebrew
     
 ### Windows
 
-Source code, DLLs can be downloaded from [NLopt official site](https://nlopt.readthedocs.io/en/latest/NLopt_on_Windows/).
+Source code and DLLs can be downloaded from [NLopt official site](https://nlopt.readthedocs.io/en/latest/NLopt_on_Windows/).
 
 
 ## Compile
@@ -61,11 +61,11 @@ example:
 
 [input_file] is mandatory. The rest two arguments are optional. If [solver_options_file] is not specified, `findInjective` will look for a file named `solver_options` in the same directory as the binary. If that file is not found, the program will fall back to default options. If [result_file] is not given, results will be written to a file named `result` in the directory of the binary.
 
-Input file contains vertices and faces(triangles/tetrahedrons) infomation about the rest and initial mesh, as well as the indices of constrained vertices.
+_Input file_ contains vertices and faces(triangles/tetrahedrons) infomation about the rest and initial mesh, as well as the indices of constrained vertices.
 
-Solver options file contains parameters for TLC energy, options for NLopt solver, and a list of intermediate status to record during optimization.
+_Solver options file_ contains parameters for TLC energy, options for NLopt solver, and a list of intermediate status to record during optimization.
 
-Result file contains the vertices of result mesh, and also intermediate records as specified in solver options file.
+_Result file_ contains the vertices of result mesh, and also intermediate records as specified in solver options file.
 
 Examples of these files are located in `example` directory.
 
