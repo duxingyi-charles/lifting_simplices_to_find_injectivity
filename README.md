@@ -2,12 +2,18 @@
 
 ![](figure/teaser.png)
 
-[Xingyi Du](https://duxingyi-charles.github.io/) [Noam Aigerman](https://research.adobe.com/person/noam-aigerman/), [Qingnan Zhou](https://research.adobe.com/person/qingnan-zhou/), [Shahar Kovalsky](https://shaharkov.github.io/), [Yajie Yan](https://yajieyan.github.io/), [Danny Kaufman](http://dannykaufman.io/), [Tao Ju](https://www.cse.wustl.edu/~taoju/)<br/>
+[Xingyi Du](https://duxingyi-charles.github.io/), [Noam Aigerman](https://research.adobe.com/person/noam-aigerman/), [Qingnan Zhou](https://research.adobe.com/person/qingnan-zhou/), [Shahar Kovalsky](https://shaharkov.github.io/), [Yajie Yan](https://yajieyan.github.io/), [Danny Kaufman](https://research.adobe.com/person/danny-kaufman/), [Tao Ju](https://www.cse.wustl.edu/~taoju/)<br/>
 *ACM Transaction on Graphics (Proceedings of SIGGRAPH 2020)*<br/>
 
+## Abstract
 
-# TLC-QN
-TLC (Total Lifted Content) energy minimization by quasi-Newton method.
+Mapping a source mesh into a target domain while preserving local injectivity is an important but highly non-trivial task. Existing methods either require an already-injective starting configuration, which is often not available, or rely on sophisticated solving schemes. We propose a novel energy form, called Total Lifted Content (**TLC**), that is equipped with theoretical properties desirable for injectivity optimization. By lifting the simplices of the mesh into a higher dimension and measuring their contents (2D area or 3D volume) there, **TLC** is smooth over the entire embedding space and its global minima are always injective. The energy is simple to minimize using standard gradient-based solvers. Our method achieved _100_% success rate on an extensive benchmark of embedding problems for triangular and tetrahedral meshes, on which existing methods only have varied success.
+
+## TLC-QN
+
+Here we release TLC-QN, a program that find injective mapping by minimize our TLC (Total Lifted Content) energy using quasi-Newton method.
+
+Another variant based on projected Newton method will be released soon.
 
 tested on macOS 10.15.1 (Apple Clang 11.0.0) and Ubuntu 18.04.3 LTS (gcc 7.4.0).
 
