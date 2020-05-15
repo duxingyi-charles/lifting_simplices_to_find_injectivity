@@ -15,9 +15,11 @@ bool importData(const char* filename,
 	std::vector<std::vector<double> > &restV,
 	std::vector<std::vector<double> > &initV,
 	std::vector<std::vector<unsigned> > &F,
-	std::vector<unsigned> &handles,
-	std::string &form,
-	double &alpha)
+	std::vector<unsigned> &handles
+//	,
+//	std::string &form,
+//	double &alpha
+	)
 {
 	std::ifstream in_file(filename);
 
@@ -79,10 +81,10 @@ bool importData(const char* filename,
     }
 
     //form
-    in_file >> form;
+//    in_file >> form;
 
     //alpha
-    in_file >> alpha;
+//    in_file >> alpha;
 
     in_file.close();
 
@@ -94,14 +96,16 @@ class NloptOptionManager
 {
 public:
 	//default options
-	NloptOptionManager(): 
+	NloptOptionManager():
+	form("Tutte"), alphaRatio(1e-6), alpha(1e-6),
 	ftol_abs(1e-8), ftol_rel(1e-8), xtol_abs(1e-8), xtol_rel(1e-8),
-	maxeval(1000), algorithm("LBFGS"), stopCode("none"), record()
+	maxeval(10000), algorithm("LBFGS"), stopCode("all_good"), record()
 	{};
 	//import options from file
-	NloptOptionManager(const char* filename): 
+	NloptOptionManager(const char* filename):
+	form("Tutte"), alphaRatio(1e-6), alpha(1e-6),
 	ftol_abs(1e-8), ftol_rel(1e-8), xtol_abs(1e-8), xtol_rel(1e-8),
-	maxeval(1000), algorithm("LBFGS"), stopCode("none"), record()
+	maxeval(10000), algorithm("LBFGS"), stopCode("all_good"), record()
 	{
 		if (!importOptions(filename))
 		{
@@ -111,6 +115,12 @@ public:
 
 	~NloptOptionManager() {};
 
+	// energy formulation options
+	std::string form;
+	double alphaRatio;
+	double alpha;
+
+	// optimization options
 	double ftol_abs;
 	double ftol_rel;
 	double xtol_abs;
@@ -122,6 +132,9 @@ public:
 
 	void printOptions()
 	{
+        std::cout << "form:\t" << form << "\n";
+        std::cout << "alphaRatio:\t" << alphaRatio << "\n";
+        std::cout << "alpha:\t"    <<  alpha    << "\n";
 		std::cout << "ftol_abs:\t" <<  ftol_abs << "\n";
 		std::cout << "ftol_rel:\t" <<  ftol_rel << "\n";
 		std::cout << "xtol_abs:\t" <<  xtol_abs << "\n";
@@ -135,7 +148,6 @@ public:
 			std::cout << *i << " ";
 		}
 		std::cout << "}" << std::endl;
-
 	}
 
 	bool importOptions(const char* filename)
@@ -145,19 +157,43 @@ public:
 
 		if (! in_file.is_open()) 
 		{
-			std::cerr << "Failed to open " << filename << "!" << std::endl;
+			std::cerr << "Failed to open solver option file:" << filename << "!" << std::endl;
 			return false;
 		}
 
 		//read the file
-		unsigned normal = 0;
+		unsigned abnormal = 0;
 		std::string optName;
 		while(true)
 		{
+		    in_file >> optName;
+            if (optName != "form")
+            {
+                abnormal = 1;
+                break;
+            }
+            in_file >> form;
+
+            in_file >> optName;
+            if (optName != "alphaRatio")
+            {
+                abnormal = 2;
+                break;
+            }
+            in_file >> alphaRatio;
+
+            in_file >> optName;
+            if (optName != "alpha")
+            {
+                abnormal = 3;
+                break;
+            }
+            in_file >> alpha;
+
 			in_file >> optName;
 			if (optName != "ftol_abs")
 			{
-				normal = 1;
+				abnormal = 4;
 				break;
 			}
 			in_file >> ftol_abs;
@@ -165,7 +201,7 @@ public:
 			in_file >> optName;
 			if (optName != "ftol_rel")
 			{
-				normal = 2;
+				abnormal = 5;
 				break;
 			}
 			in_file >> ftol_rel;
@@ -173,7 +209,7 @@ public:
 			in_file >> optName;
 			if (optName != "xtol_abs")
 			{
-				normal = 3;
+				abnormal = 6;
 				break;
 			}
 			in_file >> xtol_abs;
@@ -181,7 +217,7 @@ public:
 			in_file >> optName;
 			if (optName != "xtol_rel")
 			{
-				normal = 4;
+				abnormal = 7;
 				break;
 			}
 			in_file >> xtol_rel;
@@ -189,7 +225,7 @@ public:
 			in_file >> optName;
 			if (optName != "algorithm")
 			{
-				normal = 5;
+				abnormal = 8;
 				break;
 			}
 			in_file >> algorithm;
@@ -197,7 +233,7 @@ public:
 			in_file >> optName;
 			if (optName != "maxeval")
 			{
-				normal = 6;
+				abnormal = 9;
 				break;
 			}
 			in_file >> maxeval;
@@ -205,7 +241,7 @@ public:
 			in_file >> optName;
 			if (optName != "stopCode")
 			{
-				normal = 7;
+				abnormal = 10;
 				break;
 			}
 			in_file >> stopCode;
@@ -213,7 +249,7 @@ public:
 			in_file >> optName;
 			if (optName != "record")
 			{
-				normal = 8;
+				abnormal = 11;
 				break;
 			}
 			size_t n;
@@ -229,9 +265,9 @@ public:
 
 		in_file.close();
 
-		if (normal!=0)
+		if (abnormal!=0)
 		{
-			std::cout << "Err:(" << normal << ") fail to import options from file. Check file format." << std::endl;
+			std::cout << "Err:(" << abnormal << ") fail to import options from file. Check file format." << std::endl;
 			return false;
 		}
 
@@ -338,7 +374,7 @@ double tri_signed_area(const std::vector<double> &p1,
 	const std::vector<double> &p3)
 {
 	// input: 2D coordinates of 3 points of a triangle
-	// return: 2 times of signd volume of the triangle
+	// return: 2 times of signed volume of the triangle
 	double x1=p1[0], y1=p1[1];
 	double x2=p2[0], y2=p2[1];
 	double x3=p3[0], y3=p3[1];
@@ -352,7 +388,7 @@ double tet_signed_volume(const std::vector<double> &p1,
 	const std::vector<double> &p4)
 {
 	// input: 3D coordinates of 4 points of a tet
-	// return: 6 times of signd volume of the tet
+	// return: 6 times of signed volume of the tet
 	double x1=p1[0], y1=p1[1], z1=p1[2];
 	double x2=p2[0], y2=p2[1], z2=p2[2];
 	double x3=p3[0], y3=p3[1], z3=p3[2];
@@ -364,14 +400,36 @@ double tet_signed_volume(const std::vector<double> &p1,
    	return vol;
 }
 
-// double tri_area(const std::vector<double> &d)
-// {
-// 	// input: d is a vector of squared length of 3 edges of a triangle
-// 	// return: 4 times of the triangle area
-// 	double d0=d[0],d1=d[1],d2=d[2];
-// 	double det = -d2*d2 + d1*(-d1 + 2*d2) + d0*(-d0 + 2*d1 + 2*d2);
-// 	return sqrt(det);
-// }
+double total_tri_signed_area(const std::vector<std::vector<double> > &V,
+                             const std::vector<std::vector<unsigned> > &F)
+{
+    // input: tri-mesh with vertices V and faces F
+    unsigned nF = F.size();
+
+    double area = 0;
+    for (int i = 0; i < nF; ++i) {
+        area += tri_signed_area(V[F[i][0]],V[F[i][1]],V[F[i][2]]);
+    }
+    area /= 2;
+
+    return area;
+}
+
+double total_tet_signed_volume(const std::vector<std::vector<double> > &V,
+                             const std::vector<std::vector<unsigned> > &F)
+{
+    // input: tet-mesh with vertices V and faces F
+    unsigned nF = F.size();
+
+    double area = 0;
+    for (int i = 0; i < nF; ++i) {
+        area += tet_signed_volume(V[F[i][0]],V[F[i][1]],V[F[i][2]],V[F[i][3]]);
+    }
+    area /= 6;
+
+    return area;
+}
+
 
 double tri_area(const std::vector<double> &d)
 {
@@ -411,6 +469,72 @@ double tet_volume(const std::vector<double> &d)
 	return sqrt(det);
 }
 
+void compute_mesh_squared_edge_length(const std::vector<std::vector<double> > &V,
+        const std::vector<std::vector<unsigned> > &F,
+        std::vector<std::vector<double> > &edgeLen2)
+{
+    // input: mesh with vertices V and cells F
+    // modify: vector of squared edge lengths
+    unsigned nF = F.size();
+    unsigned simplexSize = F[0].size();
+    unsigned nEdge = simplexSize * (simplexSize -1) /2;
+
+    // compute squared edge length
+    edgeLen2.resize(0);
+    for (int i = 0; i < nF; ++i) {
+        std::vector<double> Di;
+        Di.reserve(nEdge);
+        for (int j = 0; j < simplexSize; ++j)
+        {
+            for (int k = j+1; k < simplexSize; ++k)
+            {
+                Di.push_back(distance2(V[F[i][j]],V[F[i][k]]));
+            }
+        }
+        edgeLen2.push_back(Di);
+    }
+}
+
+double total_tri_area(const std::vector<std::vector<double> > &V,
+        const std::vector<std::vector<unsigned> > &F)
+{
+    // input: a tri-mesh with vertices V and faces F
+    // output: total unsigned area of the mesh
+    unsigned nF = F.size();
+
+    std::vector<std::vector<double> > edgeLen2;
+    compute_mesh_squared_edge_length(V,F,edgeLen2);
+
+    // compute triangle areas
+    double area = 0;
+    for (int i = 0; i < nF; ++i) {
+        area += tri_area(edgeLen2[i]);
+    }
+    area /= 4;
+
+    return  area;
+}
+
+double total_tet_volume(const std::vector<std::vector<double> > &V,
+                      const std::vector<std::vector<unsigned> > &F)
+{
+    // input: a tet-mesh with vertices V and tets F
+    // output: total unsigned volume of the mesh
+    unsigned nF = F.size();
+
+    std::vector<std::vector<double> > edgeLen2;
+    compute_mesh_squared_edge_length(V,F,edgeLen2);
+
+    // compute tet volumes
+    double area = 0;
+    for (int i = 0; i < nF; ++i) {
+        area += tet_volume(edgeLen2[i]);
+    }
+    area /= 12;
+
+    return  area;
+}
+
 std::vector<double> tri_grad(const std::vector<double> &d)
 {
 	double d0=d[0],d1=d[1],d2=d[2];
@@ -443,6 +567,7 @@ public:
 	 	std::vector<std::vector<unsigned> > &restF,
 	 	std::vector<unsigned> &handles,
 	 	std::string form,
+	 	double alphaRatio,
 	 	double alpha) :
 	 V(initV), F(restF), freeI(0), solutionFound(false),
 	 lastFunctionValue(HUGE_VAL), stopCode("none"),
@@ -465,6 +590,15 @@ public:
 	 		}
 	 	}
 
+	 	// compute alpha if it's not explicitly given
+	 	double alphaFinal;
+	 	if (alpha >=0) alphaFinal = alpha;
+	 	else {  //alpha < 0. Deduce alpha from alphaRatio
+	 	    alphaFinal = computeAlpha(restV,initV,F,form,alphaRatio);
+	 	}
+	 	std::cout << "alphaRatio: " << alphaRatio << std::endl;
+	 	std::cout << "alpha: " << alphaFinal << std::endl;
+
 	 	//compute squared edge length of rest mesh
 	 	unsigned nF = F.size();
 	 	unsigned simplexSize = F[0].size();
@@ -472,11 +606,11 @@ public:
 	 	double a;
 	 	if (simplexSize == 3) { //triangle
 	 		nEdge = 3;
-	 		a = alpha;
+	 		a = alphaFinal;
 	 	} 
 	 	else { //tet
 	 		nEdge = 6;
-	 		a = cbrt(alpha);
+	 		a = cbrt(alphaFinal);
 	 		a = a*a;
 	 	}
 	 	
@@ -496,7 +630,7 @@ public:
 	 			restD.push_back(Di);
 	 		}
 	 	}
-	 	else  //tutte-uniform
+	 	else  //Tutte
 	 	{
 	 		for (int i = 0; i < nF; ++i)
 	 		{
@@ -540,6 +674,39 @@ public:
 	std::vector<std::vector<std::vector<double> > > vertRecord;
 	std::vector<double> minAreaRecord;
 	std::vector<double> energyRecord;
+
+	// compute alpha from alphaRatio
+    double computeAlpha(const std::vector<std::vector<double> > &restV,
+            const std::vector<std::vector<double> > &initV,
+            const std::vector<std::vector<unsigned> > &F,
+            std::string form, double alphaRatio)
+    {
+        unsigned nF = F.size();
+        unsigned simplex_size = F[0].size();
+        double rest_measure = 0;
+        double init_measure = 0;
+        if (simplex_size == 3) { // tri
+            init_measure = total_tri_signed_area(initV,F);
+            if (form == "harmonic") {
+                rest_measure = total_tri_area(restV,F);
+            }
+            else { // Tutte form
+                rest_measure = nF * sqrt(3) / 4;
+            }
+        }
+        else { // tet
+            init_measure = total_tet_signed_volume(initV,F);
+            if (form == "harmonic") {
+                rest_measure = total_tet_volume(restV,F);
+            }
+            else { // Tutte form
+                rest_measure = nF * sqrt(2) / 12;
+            }
+        }
+
+        // alpha
+        return alphaRatio * init_measure / rest_measure;
+    }
 
 
 	// record information we cared about
@@ -880,32 +1047,36 @@ double lifted_func(const std::vector<double> &x, std::vector<double> &grad, void
 //// test nlopt
 int main(int argc, char const *argv[])
 {
-	const char* dataFile = (argc > 1) ? argv[1] : "../test/lifted";
-	const char* optFile  = (argc > 2) ? argv[2] : "../test/lifted_solver_options";
-	const char* resFile  = (argc > 3) ? argv[3] : "../test/lifted_res";
+	const char* dataFile = (argc > 1) ? argv[1] : "../example/input";
+	const char* optFile  = (argc > 2) ? argv[2] : "../example/solver_options";
+	const char* resFile  = (argc > 3) ? argv[3] : "../example/result";
 
 	//import data
 	std::vector<std::vector<double> > restV;
 	std::vector<std::vector<double> > initV;
 	std::vector<std::vector<unsigned> > F;
 	std::vector<unsigned> handles;
-	std::string form;
-	double alpha;
 
-	importData(dataFile,restV,initV,F,handles,form,alpha);
+	//importData(dataFile,restV,initV,F,handles,form,alpha);
+    importData(dataFile,restV,initV,F,handles);
+
+    //import options
+    //
+//    std::string form;
+//    double alpha;
+    NloptOptionManager options(optFile);
+    //std::cout << "--- options ---" << std::endl;
+    //options.printOptions();
+
 
 	//init
-	LiftedData data(restV,initV,F,handles,form,alpha);
+	//LiftedData data(restV,initV,F,handles,form,alpha);
+    LiftedData data(restV,initV,F,handles,options.form,options.alphaRatio,options.alpha);
 
 	unsigned nv = restV.size();
 	unsigned nfree = nv - handles.size();
 	unsigned embed_dim = initV[0].size();
 	unsigned problem_dim = nfree * embed_dim;
-
-	//import options
-	NloptOptionManager options(optFile);
-	//std::cout << "--- options ---" << std::endl;
-	//options.printOptions();
 
 	//set algorithm
 	nlopt::algorithm algo = nlopt::LD_LBFGS;
@@ -922,13 +1093,6 @@ int main(int argc, char const *argv[])
 	opt.set_xtol_abs(options.xtol_abs);
 	opt.set_xtol_rel(options.xtol_rel);
 	opt.set_maxeval(options.maxeval);
-
-	// std::cout << "nlopt stop criteria:" << std::endl;
-	// std::cout << "ftol_abs: " << opt.get_ftol_abs() << std::endl;
-	// std::cout << "ftol_rel: " << opt.get_ftol_rel() << std::endl;
-	// std::cout << "xtol_abs: " << opt.get_xtol_abs()[0] << std::endl;
-	// std::cout << "xtol_rel: " << opt.get_xtol_rel() << std::endl;
-	// std::cout << "maxeval: " << opt.get_maxeval() << std::endl;
 
 	//pass relevent options to LiftedData
 	data.stopCode = options.stopCode;
@@ -970,12 +1134,12 @@ int main(int argc, char const *argv[])
 				std::cout << "unexpected return code!" << std::endl;
 				break;
 		}
-		std::cout << "met custom stop criteria: ";
+		std::cout << "met custom stop criteria (" << options.stopCode << "): ";
 		if (data.solutionFound) std::cout << "yes" << std::endl;
 		else std::cout << "no" << std::endl;
 		//
-		std::cout << data.nb_feval << " function evalations, ";
-		std::cout << data.nb_geval << " gradient evalations." << std::endl;
+		//std::cout << data.nb_feval << " function evalations, ";
+		//std::cout << data.nb_geval << " gradient evalations." << std::endl;
 
 	}
 	catch(std::exception &e) {
