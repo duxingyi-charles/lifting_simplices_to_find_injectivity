@@ -5,7 +5,7 @@
 [Xingyi Du](https://duxingyi-charles.github.io/), [Noam Aigerman](https://research.adobe.com/person/noam-aigerman/), [Qingnan Zhou](https://research.adobe.com/person/qingnan-zhou/), [Shahar Kovalsky](https://shaharkov.github.io/), [Yajie Yan](https://yajieyan.github.io/), [Danny Kaufman](https://research.adobe.com/person/danny-kaufman/), [Tao Ju](https://www.cse.wustl.edu/~taoju/)<br/>
 *ACM Transaction on Graphics (Proceedings of SIGGRAPH 2020)*<br/>
 
-[`Project Page`](http://localhost:1313/publication/lifting-simplices-to-find-injectivity/)
+[`Project Page`](https://duxingyi-charles.github.io/publication/lifting-simplices-to-find-injectivity/)
 
 ## Abstract
 
