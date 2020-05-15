@@ -124,7 +124,7 @@ result_file
     
 ## Dataset
 
-We release the large benchmark dataset of 2D/3D meshes used to compare with existing methods. The dataset includes _10743_ triangular mesh examples and _904_ tetrahedral mesh examples. The dateset is divided into 3 categories, 2D parameterization, 3D parameterization and 3D deformation. The dataset comes with both inputs and results of our method. Here is a more detailed [introduction and some examples](http://localhost:1313/publication/lifting-simplices-to-find-injectivity/).
+We release the large benchmark dataset of 2D/3D meshes used to compare with existing methods. The dataset includes _10743_ triangular mesh examples and _904_ tetrahedral mesh examples. The dateset is divided into 3 categories, 2D parameterization, 3D parameterization and 3D deformation. The dataset comes with both inputs and results of our method. Here is a more detailed [introduction and some examples](https://duxingyi-charles.github.io/publication/lifting-simplices-to-find-injectivity/).
 
 You can download our dataset at [here](https://doi.org/10.5281/zenodo.3827969).
     
