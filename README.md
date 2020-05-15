@@ -61,7 +61,7 @@ example:
 
 [input_file] is mandatory. The rest two arguments are optional. If [solver_options_file] is not specified, `findInjective` will look for a file named `solver_options` in the same directory as the binary. If that file is not found, the program will fall back to default options. If [result_file] is not given, results will be written to a file named `result` in the directory of the binary.
 
-_Input file_ contains vertices and faces(triangles/tetrahedrons) infomation about the rest and initial mesh, as well as the indices of constrained vertices.
+_Input file_ contains vertices and faces(triangles/tetrahedrons) information about the rest and initial mesh, as well as the indices of constrained vertices.
 
 _Solver options file_ contains parameters for TLC energy, options for NLopt solver, and a list of intermediate status to record during optimization.
 
@@ -123,7 +123,7 @@ result_file
     
 ## Dataset
 
-We release the large benchmark dataset of 2D/3D meshes used to compare with existing methods. The dataset includes _10743_ triangular mesh examples and _904_ tetrahedral mesh examples. The dateset is divided into 3 categories, 2D parameterization, 3D parameterization and 3D deformation. The dataset comes with both inputs and results of our method. Here is a more detailed [introduction and some examples](https://duxingyi-charles.github.io/publication/lifting-simplices-to-find-injectivity/).
+We release the large benchmark dataset of 2D/3D meshes used to compare with existing methods. The dataset includes _10743_ triangular mesh examples and _904_ tetrahedral mesh examples. The dataset is divided into 3 categories, 2D parameterization, 3D parameterization and 3D deformation. The dataset comes with both inputs and results of our method. Here is a more detailed [introduction and some examples](https://duxingyi-charles.github.io/publication/lifting-simplices-to-find-injectivity/).
 
 You can download our dataset at [here](https://doi.org/10.5281/zenodo.3827969).
     
