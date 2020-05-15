@@ -6,8 +6,6 @@ add_executable(findInjective TLC.cpp)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build")
-
 set(NLopt_INCLUDE_DIR /usr/local/include CACHE PATH "NLopt include directory")
 set(NLopt_LIB_DIR /usr/local/lib CACHE PATH "NLopt library directory")
 
