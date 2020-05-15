@@ -11,15 +11,15 @@ Mapping a source mesh into a target domain while preserving local injectivity is
 
 ## TLC-QN
 
-Here we release TLC-QN, a program that find injective mapping by minimize our TLC (Total Lifted Content) energy using quasi-Newton method.
+Here we release TLC-QN, a program that finds injective mapping by minimize TLC (Total Lifted Content) energy using quasi-Newton method.
 
-Another variant based on projected Newton method will be released soon.
+This program has been tested on macOS 10.15.3 (Apple Clang 11.0.3), Ubuntu 18.04.3 LTS (gcc 7.4.0) and Windows 10 (visual studio 2019).
 
-tested on macOS 10.15.1 (Apple Clang 11.0.0) and Ubuntu 18.04.3 LTS (gcc 7.4.0).
+A similar program based on projected Newton method will be released soon.
 
-## install NLopt
+## Dependency
 
-We use the lbfgs quasi-Newton method implemented in NLopt.
+We use the lbfgs quasi-Newton method implemented in [NLopt](https://nlopt.readthedocs.io/en/latest/).
 
 ### macOS
 install NLopt (version 2.6.1) by homebrew
@@ -28,27 +28,36 @@ install NLopt (version 2.6.1) by homebrew
 
 ### Ubuntu
     sudo apt-get install libnlopt-dev
+    
+### Window
+
+Source code, DLLs can be downloaded from [NLopt official site](https://nlopt.readthedocs.io/en/latest/NLopt_on_Windows/).
 
 
-## compile
-    g++ lifted_test.cpp -lnlopt -lm -O3 -o nloptSolve
+## Compile
 
-`-lnlopt -lm` links to NLopt library and math library.
+Use the following commonds on Mac/Linux,
+    
+    mkdir build
+    cd build
+    cmake -DCMAKE_BUILD_TYPE=Release ..
+    make
 
-## how to use
+You may need to edit NLopt paths in CMakeLists.txt to proper directories on your machine.
 
-the executable `nloptSolve` asks for 3 options: a path to data file, a path to solver options file, and a path to the file 
-to store the result.
+## How to use
 
-    ./nloptSolve [data_file] [solver_options_file] [result_file]
+The executable `findInjective` asks for 3 arguments: a path to input data file, a path to solver options file, and a path to the file to store the result.
+
+    ./findInjective [input_file] [solver_options_file] [result_file]
 
 example:
 
-    ./nloptSolve test/lifted test/lifted_solver_options test/lifted_res
+    ./findInjective example/input example/solver_options example/result
 
 ## data format
 
-data_file
+input_file
 
     num_restVert dimension_restVert
     ... num_restVert x dimension_restVert matrix ...
@@ -60,6 +69,9 @@ data_file
     ... num_handles x 1 matrix ...
     harmonic OR tutte-uniform
     alpha
+ 
+solver_options_file
+
 
 result_file
     
