@@ -1,3 +1,11 @@
+# Lifting Simplices to Find Injectivity
+
+![](figure/teaser.png)
+
+[Xingyi Du](https://duxingyi-charles.github.io/) [Noam Aigerman](https://research.adobe.com/person/noam-aigerman/), [Qingnan Zhou](https://research.adobe.com/person/qingnan-zhou/), [Shahar Kovalsky](https://shaharkov.github.io/), [Yajie Yan](https://yajieyan.github.io/), [Danny Kaufman](http://dannykaufman.io/), [Tao Ju](https://www.cse.wustl.edu/~taoju/)<br/>
+*ACM Transaction on Graphics (Proceedings of SIGGRAPH 2020)*<br/>
+
+
 # TLC-QN
 TLC (Total Lifted Content) energy minimization by quasi-Newton method.
 
