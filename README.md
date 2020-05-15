@@ -21,7 +21,7 @@ A similar program based on projected Newton method will be released soon.
 
 We use the lbfgs quasi-Newton method implemented in [NLopt](https://nlopt.readthedocs.io/en/latest/).
 
-### macOS
+### Mac
 install NLopt (version 2.6.1) by homebrew
 
     brew install nlopt
@@ -29,21 +29,23 @@ install NLopt (version 2.6.1) by homebrew
 ### Ubuntu
     sudo apt-get install libnlopt-dev
     
-### Window
+### Windows
 
 Source code, DLLs can be downloaded from [NLopt official site](https://nlopt.readthedocs.io/en/latest/NLopt_on_Windows/).
 
 
 ## Compile
 
-Use the following commonds on Mac/Linux,
+Use the following commands on Mac/Linux,
     
     mkdir build
     cd build
     cmake -DCMAKE_BUILD_TYPE=Release ..
     make
 
-You may need to edit NLopt paths in CMakeLists.txt to proper directories on your machine.
+You may need to edit NLopt paths in CMakeLists.txt to the proper directories on your machine.
+
+For Windows, you can use CMake to generate a visual studio project from CMakeLists.txt.
 
 ## How to use
 
@@ -54,6 +56,17 @@ The executable `findInjective` asks for 3 arguments: a path to input data file, 
 example:
 
     ./findInjective example/input example/solver_options example/result
+
+[input_file] is mandatory. The rest two arguments are optional. If [solver_options_file] is not specified, `findInjective` will look for a solver_options file in the directory of the binary. If that file is not found, the program will fall back to default options. If [result_file] is not given, results will be written to a file called result in the directory of the binary.
+
+
+Input file contains vertices and faces(triangles/tetrahedrons) infomation about the rest and initial mesh, as well as the indices of constrained vertices.
+
+Solver options file contains parameters for TLC energy, options for NLopt solver, and a list of intermediate status to record during optimization.
+
+Result file contains the vertices of result mesh, and also intermediate records as specified in solver options file.
+
+
 
 ## data format
 
@@ -71,6 +84,33 @@ input_file
     alpha
  
 solver_options_file
+
+    form
+    [val]
+    alphaRatio
+    [val]
+    alpha
+    [val]
+    ftol_abs
+    [val]
+    ftol_rel
+    [val]
+    xtol_abs
+    [val]
+    xtol_rel
+    [val]
+    algorithm
+    [val]
+    maxeval
+    [val]
+    stopCode
+    [val]
+    record
+    [n: size of record]
+    [record type 1]
+    [record type 2]
+    ...
+    [record type n]
 
 
 result_file
