@@ -101,6 +101,7 @@ public:
 		if (!importOptions(filename))
 		{
 			std::cout << "NloptOptionManager Warn: default options are used." << std::endl;
+
 		}
 	};
 
@@ -825,7 +826,6 @@ public:
 			{
 				out_file << V[i][j] << " ";
 			}
-			// out_file << std::endl;
 		}
 		out_file << std::endl;
 
@@ -1039,9 +1039,9 @@ double lifted_func(const std::vector<double> &x, std::vector<double> &grad, void
 //
 int main(int argc, char const *argv[])
 {
-	const char* dataFile = (argc > 1) ? argv[1] : "../example/input";
-	const char* optFile  = (argc > 2) ? argv[2] : "../example/solver_options";
-	const char* resFile  = (argc > 3) ? argv[3] : "../example/result";
+	const char* dataFile = (argc > 1) ? argv[1] : "./input";
+	const char* optFile  = (argc > 2) ? argv[2] : "./solver_options";
+	const char* resFile  = (argc > 3) ? argv[3] : "./result";
 
 	//import data
 	std::vector<std::vector<double> > restV;
@@ -1049,7 +1049,11 @@ int main(int argc, char const *argv[])
 	std::vector<std::vector<unsigned> > F;
 	std::vector<unsigned> handles;
 
-    importData(dataFile,restV,initV,F,handles);
+    bool succeed = importData(dataFile,restV,initV,F,handles);
+    if (!succeed) {
+        std::cout << "usage: findInjective [inputFile] [solverOptionsFile] [resultFile]" << std::endl;
+        return -1;
+    }
 
     //import options
     NloptOptionManager options(optFile);
