@@ -1,5 +1,5 @@
 // 2D/3D lifted formulation
-#include <math.h>
+#include <cmath>
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -93,7 +93,7 @@ public:
 	maxeval(10000), algorithm("LBFGS"), stopCode("all_good"), record()
 	{};
 	//import options from file
-	NloptOptionManager(const char* filename):
+	explicit NloptOptionManager(const char* filename):
 	form("Tutte"), alphaRatio(1e-6), alpha(1e-6),
 	ftol_abs(1e-8), ftol_rel(1e-8), xtol_abs(1e-8), xtol_rel(1e-8),
 	maxeval(10000), algorithm("LBFGS"), stopCode("all_good"), record()
@@ -669,28 +669,28 @@ public:
 	std::vector<double> energyRecord;
 
 	// compute alpha from alphaRatio
-    double computeAlpha(const std::vector<std::vector<double> > &restV,
+    static double computeAlpha(const std::vector<std::vector<double> > &restV,
             const std::vector<std::vector<double> > &initV,
-            const std::vector<std::vector<unsigned> > &F,
+            const std::vector<std::vector<unsigned> > &Faces,
             std::string form, double alphaRatio)
     {
-        unsigned nF = F.size();
-        unsigned simplex_size = F[0].size();
+        unsigned nF = Faces.size();
+        unsigned simplex_size = Faces[0].size();
         double rest_measure = 0;
         double init_measure = 0;
         if (simplex_size == 3) { // tri
-            init_measure = total_tri_signed_area(initV,F);
+            init_measure = total_tri_signed_area(initV,Faces);
             if (form == "harmonic") {
-                rest_measure = total_tri_area(restV,F);
+                rest_measure = total_tri_area(restV,Faces);
             }
             else { // Tutte form
                 rest_measure = nF * sqrt(3) / 4;
             }
         }
         else { // tet
-            init_measure = total_tet_signed_volume(initV,F);
+            init_measure = total_tet_signed_volume(initV,Faces);
             if (form == "harmonic") {
-                rest_measure = total_tet_volume(restV,F);
+                rest_measure = total_tet_volume(restV,Faces);
             }
             else { // Tutte form
                 rest_measure = nF * sqrt(2) / 12;
@@ -1110,10 +1110,10 @@ int main(int argc, char const *argv[])
 				std::cout << "STOPVAL_REACHED" << std::endl;
 				break;
 			case nlopt::FTOL_REACHED:
-				std::cout << "STOPVAL_REACHED" << std::endl;
+				std::cout << "FTOL_REACHED" << std::endl;
 				break;
 			case nlopt::XTOL_REACHED:
-				std::cout << "FTOL_REACHED" << std::endl;
+				std::cout << "XTOL_REACHED" << std::endl;
 				break;
 			case nlopt::MAXEVAL_REACHED:
 				std::cout << "MAXEVAL_REACHED" << std::endl;
