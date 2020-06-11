@@ -1,15 +1,15 @@
 form
 harmonic
 alphaRatio
-0.00001
+1e-6
 alpha
 -1
 ftol_abs
-0.00000001
+1e-8
 ftol_rel
-0.00000001
+1e-8
 xtol_abs
-0.00000001
+1e-8
 xtol_rel
 0.00000001
 algorithm
@@ -19,7 +19,6 @@ maxeval
 stopCode
 all_good
 record
-3
-energy
-minArea
-vert
+vert	1
+energy	1
+minArea	1

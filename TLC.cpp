@@ -238,19 +238,46 @@ public:
 			}
 			in_file >> stopCode;
 
+			// record values
 			in_file >> optName;
 			if (optName != "record")
 			{
 				abnormal = 11;
 				break;
 			}
-			size_t n;
-			in_file >> n;
-			record.resize(n);
-			for (int i = 0; i < n; ++i)
-			{
-				in_file >> record[i];
-			}
+
+            in_file >> optName;
+            if (optName != "vert") {
+                abnormal = 12;
+                break;
+            }
+            int selected = 0;
+            in_file >> selected;
+            if (selected > 0) {
+                record.push_back("vert");
+            }
+
+            in_file >> optName;
+            if (optName != "energy") {
+                abnormal = 13;
+                break;
+            }
+            selected = 0;
+            in_file >> selected;
+            if (selected > 0) {
+                record.push_back("energy");
+            }
+
+            in_file >> optName;
+            if (optName != "minArea") {
+                abnormal = 14;
+                break;
+            }
+            selected = 0;
+            in_file >> selected;
+            if (selected > 0) {
+                record.push_back("minArea");
+            }
 
 			break;
 		}
