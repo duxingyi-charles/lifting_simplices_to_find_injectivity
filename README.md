@@ -7,6 +7,8 @@
 
 [`Project Page`](https://duxingyi-charles.github.io/publication/lifting-simplices-to-find-injectivity/)
 
+[`Dataset`](https://github.com/duxingyi-charles/Locally-Injective-Mappings-Benchmark)
+
 ## Abstract
 
 Mapping a source mesh into a target domain while preserving local injectivity is an important but highly non-trivial task. Existing methods either require an already-injective starting configuration, which is often not available, or rely on sophisticated solving schemes. We propose a novel energy form, called Total Lifted Content (**TLC**), that is equipped with theoretical properties desirable for injectivity optimization. By lifting the simplices of the mesh into a higher dimension and measuring their contents (2D area or 3D volume) there, **TLC** is smooth over the entire embedding space and its global minima are always injective. The energy is simple to minimize using standard gradient-based solvers. Our method achieved _100_% success rate on an extensive benchmark of embedding problems for triangular and tetrahedral meshes, on which existing methods only have varied success.
@@ -61,7 +63,7 @@ example:
 
 [input_file] is mandatory. The rest two arguments are optional. If [solver_options_file] is not specified, `findInjective` will look for a file named `solver_options` in the same directory as the binary. If that file is not found, the program will fall back to default options. If [result_file] is not given, results will be written to a file named `result` in the directory of the binary.
 
-_Input file_ contains vertices and faces(triangles/tetrahedrons) infomation about the rest and initial mesh, as well as the indices of constrained vertices.
+_Input file_ contains vertices and faces(triangles/tetrahedrons) information about the rest and initial mesh, as well as the indices of constrained vertices.
 
 _Solver options file_ contains parameters for TLC energy, options for NLopt solver, and a list of intermediate status to record during optimization.
 
@@ -81,8 +83,6 @@ input_file
     ... num_simplex x simplex_size matrix ...
     num_handles
     ... num_handles x 1 matrix ...
-    harmonic OR tutte-uniform
-    alpha
  
 solver_options_file
 
@@ -123,8 +123,7 @@ result_file
     
 ## Dataset
 
-We release the large benchmark dataset of 2D/3D meshes used to compare with existing methods. The dataset includes _10743_ triangular mesh examples and _904_ tetrahedral mesh examples. The dateset is divided into 3 categories, 2D parameterization, 3D parameterization and 3D deformation. The dataset comes with both inputs and results of our method. Here is a more detailed [introduction and some examples](https://duxingyi-charles.github.io/publication/lifting-simplices-to-find-injectivity/).
+We release the large benchmark dataset of 2D/3D meshes used to compare with existing methods. The dataset includes _10743_ triangular mesh examples and _904_ tetrahedral mesh examples. The dataset is divided into 3 categories, 2D parameterization, 3D parameterization and 3D deformation. The dataset comes with both inputs and results of our method. Here is a more detailed [introduction and some examples](https://github.com/duxingyi-charles/Locally-Injective-Mappings-Benchmark).
 
-You can download our dataset at [here](https://doi.org/10.5281/zenodo.3827969).
     
     
