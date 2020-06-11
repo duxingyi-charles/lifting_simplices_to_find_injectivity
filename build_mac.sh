@@ -1,11 +1,8 @@
 #!/usr/bin/env bash
 
-echo "-------- install eigen ------------"
-brew ls --version eigen || brew install eigen
-echo "-------- install suitesparse ------"
-brew ls --version eigen || brew install suitesparse
-echo "-------- install libomp -----------"
-brew ls --version eigen || brew install libomp
+echo "-------- install nlopt ------------"
+brew ls --version nlopt || brew install nlopt
+
 
 mkdir build
 cd build
