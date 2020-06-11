@@ -83,8 +83,6 @@ input_file
     ... num_simplex x simplex_size matrix ...
     num_handles
     ... num_handles x 1 matrix ...
-    harmonic OR tutte-uniform
-    alpha
  
 solver_options_file
 
