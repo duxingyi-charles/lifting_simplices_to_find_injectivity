@@ -88,7 +88,7 @@ _Input file_ contains vertices and faces(triangles/tetrahedrons) information abo
  
  See `example/input` for a concrete example.
  
- It's possible to use your own mesh formats. We provide two python scripts in directory `IO` to convert common mesh formats to our `input_file` format.
+ **It's possible to use your own mesh formats.** We provide two python scripts in directory `IO` to convert common mesh formats to our `input_file` format.
  
  To use the two scripts, make sure to install [meshio](https://github.com/nschloe/meshio) with
  
