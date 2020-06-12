@@ -2,3 +2,4 @@
 test
 cmake-build-*
 build
+.idea
