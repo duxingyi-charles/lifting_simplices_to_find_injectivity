@@ -6,7 +6,6 @@
 <br/>*ACM Transaction on Graphics (Proceedings of SIGGRAPH 2020)*<br/>
 
 [`Project Page`](https://duxingyi-charles.github.io/publication/lifting-simplices-to-find-injectivity/)
-
 [`Dataset`](https://github.com/duxingyi-charles/Locally-Injective-Mappings-Benchmark)
 
 ## Abstract
@@ -23,7 +22,7 @@ The above figure illustrates **what TLC does**. It takes as input a source mesh 
 
 This program has been tested on macOS 10.15.5 (Apple Clang 11.0.3), Ubuntu 18.04.3 LTS (gcc 7.4.0) and Windows 10 (visual studio 2019).
 
-A similar program based on projected Newton method will be released soon.
+There is a similar program [TLC-PN](https://github.com/duxingyi-charles/Total-Lifted-Content-PN) based on projected Newton method.
 
 ## Build
 
@@ -88,7 +87,7 @@ _Input file_ contains vertices and faces(triangles/tetrahedrons) information abo
  
  See `example/input` for a concrete example.
  
- It's possible to use your own mesh formats. We provide two python scripts in directory `IO` to convert common mesh formats to our `input_file` format.
+ **It's possible to use your own mesh formats.** We provide two python scripts in directory `IO` to convert common mesh formats to our `input_file` format.
  
  To use the two scripts, make sure to install [meshio](https://github.com/nschloe/meshio) with
  
