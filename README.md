@@ -139,7 +139,12 @@ _Solver options file_ contains parameters for TLC energy, options for NLopt solv
     vert    [0 OR 1]
     energy  [0 OR 1]
     minArea [0 OR 1]
-   
+
+The following table explains each option in details.
+We **recommend** using the default values (especially "form", "alphaRatio" and "alpha") as they are most successful in our experiments. 
+ 
+See `example\solver_options` for a concrete example.
+
 |                | possible values  | default value | explanation                                                                                                                    |
 |----------------|------------------|---------------|--------------------------------------------------------------------------------------------------------------------------------|
 | form           | harmonic, Tutte  | Tutte         | two forms of TLC energy (see paper for details)                                                                                |
@@ -155,9 +160,7 @@ _Solver options file_ contains parameters for TLC energy, options for NLopt solv
 | record:vert    | 0, 1             | 0             | 1: record target mesh vertices at each iteration.                                                                              |
 | record:energy  | 0, 1             | 0             | 1: record TLC energy at each iteration.                                                                                        |
 | record:minArea | 0, 1             | 0             | 1: record smallest simplex signed content (area or volume) at each iteration.                                                  |
-   
-   See `example\solver_options` for a concrete example.
-   
+      
    
 
 ### result_file
