@@ -11,11 +11,11 @@ ftol_rel
 xtol_abs
 1e-8
 xtol_rel
-0.00000001
+1e-8
 algorithm
 LBFGS
 maxeval
-1000
+10000
 stopCode
 all_good
 record
