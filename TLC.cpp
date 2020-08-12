@@ -105,7 +105,7 @@ public:
 		}
 	};
 
-	~NloptOptionManager() {};
+	~NloptOptionManager() = default;
 
 	// energy formulation options
 	std::string form;
@@ -254,7 +254,7 @@ public:
             int selected = 0;
             in_file >> selected;
             if (selected > 0) {
-                record.push_back("vert");
+                record.emplace_back("vert");
             }
 
             in_file >> optName;
@@ -265,7 +265,7 @@ public:
             selected = 0;
             in_file >> selected;
             if (selected > 0) {
-                record.push_back("energy");
+                record.emplace_back("energy");
             }
 
             in_file >> optName;
@@ -276,7 +276,7 @@ public:
             selected = 0;
             in_file >> selected;
             if (selected > 0) {
-                record.push_back("minArea");
+                record.emplace_back("minArea");
             }
 
 			break;
@@ -679,7 +679,7 @@ public:
 
 	 };
 
-	~ LiftedData()	{};
+	~ LiftedData() = default;
 	std::vector<std::vector<double> > V;
 	std::vector<unsigned> freeI;
 	std::vector<std::vector<unsigned> > F;
@@ -866,8 +866,8 @@ public:
 		if (record_vert)
 		{
 			unsigned n_record = vertRecord.size();
-			unsigned nv = vertRecord[0].size();
-			unsigned ndim = vertRecord[0][0].size();
+			nv = vertRecord[0].size();
+			ndim = vertRecord[0][0].size();
 			out_file << "vert " << n_record << " " << nv << " " << ndim << std::endl;
 			for (int i = 0; i < n_record; ++i)
 			{
