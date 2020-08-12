@@ -1,6 +1,0 @@
-*.DS_Store
-test
-cmake-build-*
-build
-.idea
-.gitignore
