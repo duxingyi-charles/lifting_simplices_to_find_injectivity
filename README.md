@@ -87,6 +87,9 @@ _Input file_ contains vertices and faces(triangles/tetrahedrons) information abo
  
  See `example/input` for a concrete example.
  
+  **Important**: Since TLC aims at constrained embedding problem, the user should at least provide the indices of boundary vertices as handles in the `input_file`, or provide them in a `handleFile` as described below.
+
+ 
  **It's possible to use your own mesh formats.** We provide two python scripts in directory `IO` to convert common mesh formats to our `input_file` format.
  
  To use the two scripts, make sure to install [meshio](https://github.com/nschloe/meshio) with
@@ -99,9 +102,7 @@ _Input file_ contains vertices and faces(triangles/tetrahedrons) information abo
  
  Currently, we only support OBJ file with initial mesh as uv coordinates. Check out our [dataset](https://github.com/duxingyi-charles/Locally-Injective-Mappings-Benchmark) for some concrete OBJ and handle files.
  The generated `outFile` will have the format of our `input_file`.
- 
- **Important**: TLC aims at the constrained embedding problem, so you should at least provide the indices of boundary vertices in the `handleFile`.
- 
+  
  To convert tetrahedron rest(source) and initial meshes to our input format, run
  
     ./convert_input_3D.py [restFile] [initFile] [handleFile] [outFile]
