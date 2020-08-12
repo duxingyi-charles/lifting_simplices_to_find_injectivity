@@ -87,8 +87,8 @@ _Input file_ contains vertices and faces(triangles/tetrahedrons) information abo
  
  See `example/input` for a concrete example.
  
-:bell:  **Important**: Since TLC aims at constrained embedding problem, the user should at least provide the indices of boundary vertices as handles in the `input_file`, or provide them in a `handleFile`. 
-We provide a script to generate a `handleFile` containing boundary vertex indices for a given input mesh. See below for usage.
+:bell:  **Important**: Since TLC aims at constrained embedding problem, the user should at least provide the indices of boundary vertices as handles in the `input_file`, or provide them in a `handleFile` as described below. 
+To make this easier, we provide a script to generate a `handleFile` containing boundary vertex indices for a given input mesh. See below for usage.
 
  
 :tada: **It's possible to use your own mesh formats.** We provide two python scripts in directory `IO` to convert common mesh formats to our `input_file` format.
