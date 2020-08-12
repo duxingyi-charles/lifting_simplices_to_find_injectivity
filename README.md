@@ -87,13 +87,13 @@ _Input file_ contains vertices and faces(triangles/tetrahedrons) information abo
  
  See `example/input` for a concrete example.
  
-  **Important**: Since TLC aims at constrained embedding problem, the user should at least provide the indices of boundary vertices as handles in the `input_file`, or provide them in a `handleFile` as described below.
+:bell:  **Important**: Since TLC aims at constrained embedding problem, the user should at least provide the indices of boundary vertices as handles in the `input_file`, or provide them in a `handleFile` as described below.
   For your convenience, we provide a script in directory `IO` to generate a `handleFile` containing all the boundary vertex indices for a given input mesh:
   
     ./extract_boundary_vert.py [inputMeshFile] [outputHandleFile]
 
  
- **It's possible to use your own mesh formats.** We provide two python scripts in directory `IO` to convert common mesh formats to our `input_file` format.
+:tada: **It's possible to use your own mesh formats.** We provide two python scripts in directory `IO` to convert common mesh formats to our `input_file` format.
  
  To use the two scripts, make sure to install [meshio](https://github.com/nschloe/meshio) with
  
