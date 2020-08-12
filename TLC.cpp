@@ -475,7 +475,13 @@ double tri_area(const std::vector<double> &d)
 	b = sqrt(b);
 	c = sqrt(c);
 
-    return sqrt((a+(b+c))*(c-(a-b))*(c+(a-b))*(a+(b-c)));
+	double area2 = (a+(b+c))*(c-(a-b))*(c+(a-b))*(a+(b-c));
+	if (area2 > 0) {
+        return  sqrt(area2);
+	}
+	else {
+        return 0; // numerically degenerate triangle
+	}
 }
 
 // input: d is a vector of squared length of 6 edges of a tet
