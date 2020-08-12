@@ -73,7 +73,7 @@ In the 3 arguments, `input_file` is mandatory, while the rest two are optional. 
 
 ### input_file
 
-_Input file_ contains vertices and faces(triangles/tetrahedrons) information about the source mesh and initial embedding, as well as the indices of constrained vertices (usually boundary vertices).
+_Input file_ contains vertices and faces(triangles/tetrahedrons) information about the source mesh and initial embedding, as well as the indices of constrained vertices (called handles, usually are just boundary vertices). Vertices are indexed from 0.
 
 
     [num_sourceVert] [dimension_sourceVert]
@@ -99,6 +99,8 @@ _Input file_ contains vertices and faces(triangles/tetrahedrons) information abo
  
  Currently, we only support OBJ file with initial mesh as uv coordinates. Check out our [dataset](https://github.com/duxingyi-charles/Locally-Injective-Mappings-Benchmark) for some concrete OBJ and handle files.
  The generated `outFile` will have the format of our `input_file`.
+ 
+ **Important**: TLC aims at the constrained embedding problem, so you should at least provide the indices of boundary vertices in the `handleFile`.
  
  To convert tetrahedron rest(source) and initial meshes to our input format, run
  
@@ -141,7 +143,7 @@ _Solver options file_ contains parameters for TLC energy, options for NLopt solv
 |----------------|------------------|---------------|--------------------------------------------------------------------------------------------------------------------------------|
 | form           | harmonic, Tutte  | Tutte         | two forms of TLC energy (see paper for details)                                                                                |
 | alphaRatio     | [0, inf)         | 1e-6          | Specify the ratio of content (area or volume) between rest mesh and target domain. Default value 1e-6 is recommended.          |
-| alpha          | (-inf, inf)      | 1e-6          | If negative, alpha will be computed from alphaRatio. If non-negative, alpha will overwrite the value computed from alphaRatio. |
+| alpha          | (-inf, inf)      | -1            | If negative, alpha will be computed from alphaRatio. If non-negative, alpha will overwrite the value computed from alphaRatio. |
 | ftol_abs       | (-inf, inf)      | 1e-8          | Absolute energy change stop threshold. Negative value means disabled.                                                          |
 | ftol_rel       | (-inf, inf)      | 1e-8          | Relative energy change stop threshold. Negative value means disabled.                                                          |
 | xtol_abs       | (-inf, inf)      | 1e-8          | Absolute variable change stop threshold. Negative value means disabled.                                                        |
