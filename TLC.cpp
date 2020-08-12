@@ -88,13 +88,13 @@ class NloptOptionManager
 public:
 	//default options
 	NloptOptionManager():
-	form("Tutte"), alphaRatio(1e-6), alpha(1e-6),
+	form("Tutte"), alphaRatio(1e-6), alpha(-1),
 	ftol_abs(1e-8), ftol_rel(1e-8), xtol_abs(1e-8), xtol_rel(1e-8),
 	maxeval(10000), algorithm("LBFGS"), stopCode("all_good"), record()
 	{};
 	//import options from file
 	explicit NloptOptionManager(const char* filename):
-	form("Tutte"), alphaRatio(1e-6), alpha(1e-6),
+	form("Tutte"), alphaRatio(1e-6), alpha(-1),
 	ftol_abs(1e-8), ftol_rel(1e-8), xtol_abs(1e-8), xtol_rel(1e-8),
 	maxeval(10000), algorithm("LBFGS"), stopCode("all_good"), record()
 	{
