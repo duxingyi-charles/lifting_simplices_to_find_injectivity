@@ -610,6 +610,35 @@ public:
 	 		}
 	 	}
 
+	 	// Check and flip orientation if needed
+	 	unsigned simplexSize = F[0].size();
+	 	if (simplexSize == 3) {
+	 		double init_measure = total_tri_signed_area(initV,F);
+	 		if (init_measure < 0) {
+	 			std::cerr << "WARNING: Total signed area is negative (" << init_measure
+	 			          << "). Flipping all triangle orientations..." << std::endl;
+	 			// Flip first two indices of each triangle: (i,j,k) -> (j,i,k)
+	 			for (unsigned i = 0; i < F.size(); i++) {
+	 				unsigned tmp = F[i][0];
+	 				F[i][0] = F[i][1];
+	 				F[i][1] = tmp;
+	 			}
+	 		}
+	 	}
+	 	else {
+	 		double init_measure = total_tet_signed_volume(initV,F);
+	 		if (init_measure < 0) {
+	 			std::cerr << "WARNING: Total signed volume is negative (" << init_measure
+	 			          << "). Flipping all tetrahedron orientations..." << std::endl;
+	 			// Flip first two indices of each tet: (i,j,k,l) -> (j,i,k,l)
+	 			for (unsigned i = 0; i < F.size(); i++) {
+	 				unsigned tmp = F[i][0];
+	 				F[i][0] = F[i][1];
+	 				F[i][1] = tmp;
+	 			}
+	 		}
+	 	}
+
 	 	// compute alpha if it's not explicitly given
 	 	double alphaFinal;
 	 	if (alpha >=0) alphaFinal = alpha;
@@ -621,7 +650,6 @@ public:
 
 	 	//compute squared edge length of rest mesh
 	 	unsigned nF = F.size();
-	 	unsigned simplexSize = F[0].size();
 	 	unsigned nEdge;
 	 	double a;
 	 	if (simplexSize == 3) { //triangle
